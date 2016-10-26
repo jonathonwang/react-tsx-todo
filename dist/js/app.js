@@ -33376,6 +33376,53 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var React = require('react');
 
+var Alert = function (_React$Component) {
+    _inherits(Alert, _React$Component);
+
+    function Alert(props) {
+        _classCallCheck(this, Alert);
+
+        var _this = _possibleConstructorReturn(this, (Alert.__proto__ || Object.getPrototypeOf(Alert)).call(this, props));
+
+        _this.hideAlert = _this.hideAlert.bind(_this);
+        return _this;
+    }
+
+    _createClass(Alert, [{
+        key: "hideAlert",
+        value: function hideAlert() {
+            this.props.hideAlert();
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var alertClass = "alert alert-" + this.props.alert.status;
+            if (this.props.alert.visible === true) {
+                return React.createElement("div", { className: alertClass }, React.createElement("strong", { className: 'text-capitalize' }, this.props.alert.status), " ", this.props.alert.title, React.createElement("span", { "aria-hidden": 'true', className: 'pull-right', onClick: this.hideAlert }, "×"));
+            } else {
+                return null;
+            }
+        }
+    }]);
+
+    return Alert;
+}(React.Component);
+
+exports.Alert = Alert;
+
+},{"react":185}],187:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require('react');
+
 var InputForm = function (_React$Component) {
     _inherits(InputForm, _React$Component);
 
@@ -33414,7 +33461,7 @@ var InputForm = function (_React$Component) {
 
 exports.InputForm = InputForm;
 
-},{"react":185}],187:[function(require,module,exports){
+},{"react":185}],188:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -33457,7 +33504,7 @@ var Task = function (_React$Component) {
 
 exports.Task = Task;
 
-},{"react":185}],188:[function(require,module,exports){
+},{"react":185}],189:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -33478,6 +33525,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var InputForm_1 = require('./InputForm');
 var Task_1 = require('./Task');
+var Alert_1 = require('./Alert');
 
 var Main = function (_React$Component) {
     _inherits(Main, _React$Component);
@@ -33489,11 +33537,14 @@ var Main = function (_React$Component) {
 
         _this.state = {
             newTask: '',
-            taskList: []
+            taskList: [],
+            alert: { status: '', title: '', visible: false }
         };
         _this.createTask = _this.createTask.bind(_this);
         _this.deleteTask = _this.deleteTask.bind(_this);
         _this.updateInput = _this.updateInput.bind(_this);
+        _this.showAlert = _this.showAlert.bind(_this);
+        _this.hideAlert = _this.hideAlert.bind(_this);
         return _this;
     }
 
@@ -33509,6 +33560,9 @@ var Main = function (_React$Component) {
                 var newTaskList = this.state.taskList;
                 newTaskList.push({ id: this.state.taskList.length, name: newTask });
                 this.setState({ taskList: newTaskList, newTask: '' });
+                this.showAlert('success', newTask + ' Successfully Created');
+            } else {
+                this.showAlert('danger', 'Task Title Cannot Be Empty');
             }
         }
     }, {
@@ -33520,6 +33574,17 @@ var Main = function (_React$Component) {
             });
             newTaskList.splice(removeIndex, 1);
             this.setState({ taskList: newTaskList });
+            this.showAlert('success', removedTask.name + ' Successfully Deleted');
+        }
+    }, {
+        key: 'showAlert',
+        value: function showAlert(status, title) {
+            this.setState({ alert: { status: status, title: title, visible: true } });
+        }
+    }, {
+        key: 'hideAlert',
+        value: function hideAlert() {
+            this.setState({ alert: { status: '', title: '', visible: false } });
         }
     }, {
         key: 'render',
@@ -33529,7 +33594,7 @@ var Main = function (_React$Component) {
             var tasks = this.state.taskList.map(function (task) {
                 return React.createElement(Task_1.Task, { key: task.id, task: task, deleteTask: _this2.deleteTask });
             });
-            return React.createElement("ul", { className: 'list-group' }, React.createElement(InputForm_1.InputForm, { taskName: this.state.newTask, handleChange: this.updateInput, handleSubmit: this.createTask }), tasks);
+            return React.createElement("div", null, React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement(Alert_1.Alert, { alert: this.state.alert, hideAlert: this.hideAlert }))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("h1", { className: 'text-center' }, "Todo List"))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("ul", { className: 'list-group' }, React.createElement(InputForm_1.InputForm, { taskName: this.state.newTask, handleChange: this.updateInput, handleSubmit: this.createTask }), tasks))));
         }
     }]);
 
@@ -33539,6 +33604,6 @@ var Main = function (_React$Component) {
 exports.Main = Main;
 ReactDOM.render(React.createElement(Main, null), document.getElementById('main'));
 
-},{"./InputForm":186,"./Task":187,"bootstrap":1,"jquery":39,"react":185,"react-dom":42}]},{},[188]);
+},{"./Alert":186,"./InputForm":187,"./Task":188,"bootstrap":1,"jquery":39,"react":185,"react-dom":42}]},{},[189]);
 
 //# sourceMappingURL=app.js.map

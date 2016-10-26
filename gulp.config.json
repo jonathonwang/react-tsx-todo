@@ -1,0 +1,29 @@
+{
+  "name": "Gulp-Starter",
+  "icon": "",
+
+  "paths": {
+    "src" : {
+      "ts": "./src/ts",
+      "sass": "./src/scss",
+      "html": "./src/html"
+    },
+    "dist": {
+      "js": "./dist/js",
+      "css": "./dist/css",
+      "html": "./dist/html",
+      "fonts": "./dist/fonts"
+    },
+    "vendor": {
+      "bootstrap": {
+        "sass": "./node_modules/bootstrap-sass/assets/stylesheets",
+        "js": "./node_modules/bootstrap-sass/assets/javascripts"
+      },
+      "jquery": "./node_modules/jquery/dist/jquery.min.js",
+      "fontawesome": {
+        "sass": "./node_modules/font-awesome/scss",
+        "fonts": "./node_modules/font-awesome/fonts"
+      }
+    }
+  }
+}

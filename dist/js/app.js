@@ -33483,6 +33483,7 @@ var Task = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Task.__proto__ || Object.getPrototypeOf(Task)).call(this, props));
 
         _this.deleteTask = _this.deleteTask.bind(_this);
+        _this.toggleTaskComplete = _this.toggleTaskComplete.bind(_this);
         return _this;
     }
 
@@ -33493,9 +33494,17 @@ var Task = function (_React$Component) {
             this.props.deleteTask(task);
         }
     }, {
+        key: "toggleTaskComplete",
+        value: function toggleTaskComplete() {
+            var task = this.props.task;
+            this.props.toggleTaskComplete(task);
+        }
+    }, {
         key: "render",
         value: function render() {
-            return React.createElement("li", { className: 'list-group-item' }, React.createElement("span", null, this.props.task.name), React.createElement("button", { className: 'btn btn-xs btn-danger pull-right', onClick: this.deleteTask }, "Delete"));
+            var toggleBtn = React.createElement("button", { className: 'btn btn-xs btn-primary', onClick: this.toggleTaskComplete }, this.props.task.complete ? 'Uncheck' : 'Check');
+            var liClass = this.props.task.complete ? 'list-group-item completed' : 'list-group-item';
+            return React.createElement("li", { className: liClass }, toggleBtn, React.createElement("span", null, this.props.task.name, " ", this.props.task.complete), React.createElement("button", { className: 'btn btn-xs btn-danger pull-right', onClick: this.deleteTask }, "Delete"));
         }
     }]);
 
@@ -33545,6 +33554,7 @@ var Main = function (_React$Component) {
         _this.updateInput = _this.updateInput.bind(_this);
         _this.showAlert = _this.showAlert.bind(_this);
         _this.hideAlert = _this.hideAlert.bind(_this);
+        _this.toggleTaskComplete = _this.toggleTaskComplete.bind(_this);
         return _this;
     }
 
@@ -33558,7 +33568,7 @@ var Main = function (_React$Component) {
         value: function createTask(newTask) {
             if (newTask !== '') {
                 var newTaskList = this.state.taskList;
-                newTaskList.push({ id: this.state.taskList.length, name: newTask });
+                newTaskList.push({ id: this.state.taskList.length, name: newTask, complete: false });
                 this.setState({ taskList: newTaskList, newTask: '' });
                 this.showAlert('success', newTask + ' Successfully Created');
             } else {
@@ -33587,12 +33597,23 @@ var Main = function (_React$Component) {
             this.setState({ alert: { status: '', title: '', visible: false } });
         }
     }, {
+        key: 'toggleTaskComplete',
+        value: function toggleTaskComplete(task) {
+            var taskIndex = this.state.taskList.findIndex(function (item) {
+                return item.id === task.id;
+            });
+            task.complete = !task.complete;
+            this.state.taskList[taskIndex] = task;
+            var newTaskList = this.state.taskList;
+            this.setState({ taskList: newTaskList });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
             var tasks = this.state.taskList.map(function (task) {
-                return React.createElement(Task_1.Task, { key: task.id, task: task, deleteTask: _this2.deleteTask });
+                return React.createElement(Task_1.Task, { key: task.id, task: task, deleteTask: _this2.deleteTask, toggleTaskComplete: _this2.toggleTaskComplete });
             });
             return React.createElement("div", null, React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement(Alert_1.Alert, { alert: this.state.alert, hideAlert: this.hideAlert }))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("h1", { className: 'text-center' }, "Todo List"))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("ul", { className: 'list-group' }, React.createElement(InputForm_1.InputForm, { taskName: this.state.newTask, handleChange: this.updateInput, handleSubmit: this.createTask }), tasks))));
         }

@@ -6317,5 +6317,10 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+.list-group-item .btn-primary {
+  margin-right: 20px; }
+
+.list-group-item.completed {
+  background-color: #eee; }
 
 /*# sourceMappingURL=app.css.map */

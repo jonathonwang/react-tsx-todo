@@ -1,1 +1,10 @@
 @import 'bootstrap';
+
+.list-group-item {
+  .btn-primary {
+    margin-right: 20px;
+  }
+  &.completed {
+    background-color: #eee;
+  }
+}

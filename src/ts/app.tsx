@@ -33,6 +33,7 @@ export class Main extends React.Component<any, any> {
     this.updateInput = this.updateInput.bind(this);
     this.showAlert = this.showAlert.bind(this);
     this.hideAlert = this.hideAlert.bind(this);
+    this.toggleTaskComplete = this.toggleTaskComplete.bind(this);
   }
   updateInput(taskName: string): void {
     this.setState({ newTask: taskName });
@@ -40,7 +41,7 @@ export class Main extends React.Component<any, any> {
   createTask(newTask): void {
     if (newTask !== '') {
       const newTaskList = this.state.taskList;
-      newTaskList.push({ id: this.state.taskList.length, name: newTask });
+      newTaskList.push({ id: this.state.taskList.length, name: newTask, complete: false });
       this.setState({ taskList: newTaskList, newTask: '' });
       this.showAlert('success', `${newTask} Successfully Created`);
     }
@@ -61,10 +62,17 @@ export class Main extends React.Component<any, any> {
   hideAlert(): void {
     this.setState({ alert: { status: '', title: '', visible: false } });
   }
+  toggleTaskComplete(task): void {
+    const taskIndex: number = this.state.taskList.findIndex( (item) => item.id === task.id );
+    task.complete = !task.complete;
+    this.state.taskList[taskIndex] = task;
+    const newTaskList: Array<HTMLElement> = this.state.taskList;
+    this.setState({ taskList: newTaskList });
+  }
   render(): any {
     // Variables for Render
     const tasks: Array<HTMLElement> = this.state.taskList.map( (task) => {
-      return <Task key={task.id} task={task} deleteTask={this.deleteTask}></Task>;
+      return <Task key={task.id} task={task} deleteTask={this.deleteTask} toggleTaskComplete={this.toggleTaskComplete}></Task>;
     });
     // TSX Render
     return (

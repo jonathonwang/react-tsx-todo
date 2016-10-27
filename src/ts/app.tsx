@@ -23,8 +23,8 @@ export class Main extends React.Component<any, any> {
     super();
     // State
     this.state = {
-      newTask: '',
       taskList: [],
+      newTask: {id: 0, name: '', complete: false},
       alert: { status: '', title: '', visible: false }
     };
     // Methods Bindings
@@ -36,13 +36,26 @@ export class Main extends React.Component<any, any> {
     this.toggleTaskComplete = this.toggleTaskComplete.bind(this);
   }
   updateInput(taskName: string): void {
-    this.setState({ newTask: taskName });
+    this.setState({
+      newTask: {
+        id: this.state.newTask.id,
+        name: taskName,
+        complete: false
+      }
+    });
   }
   createTask(newTask): void {
-    if (newTask !== '') {
+    if (newTask.name !== '') {
       const newTaskList = this.state.taskList;
-      newTaskList.push({ id: this.state.taskList.length, name: newTask, complete: false });
-      this.setState({ taskList: newTaskList, newTask: '' });
+      newTaskList.push(this.state.newTask);
+      this.setState({
+        taskList: newTaskList,
+        newTask: {
+          id: this.state.taskList.length,
+          name: '',
+          complete: false
+        }
+      });
       this.showAlert('success', `${newTask} Successfully Created`);
     }
     else {
@@ -74,6 +87,18 @@ export class Main extends React.Component<any, any> {
     const tasks: Array<HTMLElement> = this.state.taskList.map( (task) => {
       return <Task key={task.id} task={task} deleteTask={this.deleteTask} toggleTaskComplete={this.toggleTaskComplete}></Task>;
     });
+    const taskToolBar: HTMLElement = (
+      <li className='list-group-item'>
+        <span>
+          <strong>Complete Tasks: </strong>
+          { this.state.taskList.filter((task) => task.complete === true).length }
+        </span>
+        <span className='pull-right'>
+          <strong>Incomplete Tasks: </strong>
+          { this.state.taskList.filter((task) => task.complete === false).length }
+        </span>
+      </li>
+    );
     // TSX Render
     return (
     <div>
@@ -92,8 +117,9 @@ export class Main extends React.Component<any, any> {
       <div className='row'>
         <div className='col-xs-8 col-xs-offset-2'>
           <ul className='list-group'>
-            <InputForm taskName={this.state.newTask} handleChange={this.updateInput} handleSubmit={this.createTask}></InputForm>
+            <InputForm taskName={this.state.newTask.name} handleChange={this.updateInput} handleSubmit={this.createTask}></InputForm>
             {tasks}
+            {this.state.taskList.length > 0 ? taskToolBar : '' }
           </ul>
         </div>
       </div>

@@ -33545,8 +33545,8 @@ var Main = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this));
 
         _this.state = {
-            newTask: '',
             taskList: [],
+            newTask: { id: 0, name: '', complete: false },
             alert: { status: '', title: '', visible: false }
         };
         _this.createTask = _this.createTask.bind(_this);
@@ -33561,15 +33561,28 @@ var Main = function (_React$Component) {
     _createClass(Main, [{
         key: 'updateInput',
         value: function updateInput(taskName) {
-            this.setState({ newTask: taskName });
+            this.setState({
+                newTask: {
+                    id: this.state.newTask.id,
+                    name: taskName,
+                    complete: false
+                }
+            });
         }
     }, {
         key: 'createTask',
         value: function createTask(newTask) {
-            if (newTask !== '') {
+            if (newTask.name !== '') {
                 var newTaskList = this.state.taskList;
-                newTaskList.push({ id: this.state.taskList.length, name: newTask, complete: false });
-                this.setState({ taskList: newTaskList, newTask: '' });
+                newTaskList.push(this.state.newTask);
+                this.setState({
+                    taskList: newTaskList,
+                    newTask: {
+                        id: this.state.taskList.length,
+                        name: '',
+                        complete: false
+                    }
+                });
                 this.showAlert('success', newTask + ' Successfully Created');
             } else {
                 this.showAlert('danger', 'Task Title Cannot Be Empty');
@@ -33615,7 +33628,12 @@ var Main = function (_React$Component) {
             var tasks = this.state.taskList.map(function (task) {
                 return React.createElement(Task_1.Task, { key: task.id, task: task, deleteTask: _this2.deleteTask, toggleTaskComplete: _this2.toggleTaskComplete });
             });
-            return React.createElement("div", null, React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement(Alert_1.Alert, { alert: this.state.alert, hideAlert: this.hideAlert }))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("h1", { className: 'text-center' }, "Todo List"))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("ul", { className: 'list-group' }, React.createElement(InputForm_1.InputForm, { taskName: this.state.newTask, handleChange: this.updateInput, handleSubmit: this.createTask }), tasks))));
+            var taskToolBar = React.createElement("li", { className: 'list-group-item' }, React.createElement("span", null, React.createElement("strong", null, "Complete Tasks: "), this.state.taskList.filter(function (task) {
+                return task.complete === true;
+            }).length), React.createElement("span", { className: 'pull-right' }, React.createElement("strong", null, "Incomplete Tasks: "), this.state.taskList.filter(function (task) {
+                return task.complete === false;
+            }).length));
+            return React.createElement("div", null, React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement(Alert_1.Alert, { alert: this.state.alert, hideAlert: this.hideAlert }))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("h1", { className: 'text-center' }, "Todo List"))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("ul", { className: 'list-group' }, React.createElement(InputForm_1.InputForm, { taskName: this.state.newTask.name, handleChange: this.updateInput, handleSubmit: this.createTask }), tasks, this.state.taskList.length > 0 ? taskToolBar : ''))));
         }
     }]);
 

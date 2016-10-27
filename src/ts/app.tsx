@@ -44,8 +44,8 @@ export class Main extends React.Component<any, any> {
       }
     });
   }
-  createTask(newTask): void {
-    if (newTask.name !== '') {
+  createTask(newTaskTitle): void {
+    if (newTaskTitle.length > 0) {
       const newTaskList = this.state.taskList;
       newTaskList.push(this.state.newTask);
       this.setState({
@@ -56,7 +56,7 @@ export class Main extends React.Component<any, any> {
           complete: false
         }
       });
-      this.showAlert('success', `${newTask} Successfully Created`);
+      this.showAlert('success', `${newTaskTitle} Successfully Created`);
     }
     else {
       this.showAlert('danger', 'Task Title Cannot Be Empty');

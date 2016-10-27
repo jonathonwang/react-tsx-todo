@@ -10,11 +10,12 @@ export class Alert extends React.Component<any, any> {
   }
   render(): any {
     const alertClass: string = `alert alert-${this.props.alert.status} text-center`;
+    const buttonClass: string = `pull-right btn btn-xs btn-${this.props.alert.status}`;
     if (this.props.alert.visible === true) {
       return (
         <div className={alertClass}>
           <strong className='text-capitalize'>{this.props.alert.status}</strong> {this.props.alert.title}
-          <span aria-hidden='true' className='pull-right' onClick={this.hideAlert}>&times;</span>
+          <button aria-hidden='true' className={buttonClass} onClick={this.hideAlert}>&times;</button>
         </div>
       );
     }

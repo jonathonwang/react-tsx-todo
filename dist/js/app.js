@@ -33397,8 +33397,9 @@ var Alert = function (_React$Component) {
         key: "render",
         value: function render() {
             var alertClass = "alert alert-" + this.props.alert.status + " text-center";
+            var buttonClass = "pull-right btn btn-xs btn-" + this.props.alert.status;
             if (this.props.alert.visible === true) {
-                return React.createElement("div", { className: alertClass }, React.createElement("strong", { className: 'text-capitalize' }, this.props.alert.status), " ", this.props.alert.title, React.createElement("span", { "aria-hidden": 'true', className: 'pull-right', onClick: this.hideAlert }, "×"));
+                return React.createElement("div", { className: alertClass }, React.createElement("strong", { className: 'text-capitalize' }, this.props.alert.status), " ", this.props.alert.title, React.createElement("button", { "aria-hidden": 'true', className: buttonClass, onClick: this.hideAlert }, "×"));
             } else {
                 return null;
             }
@@ -33571,8 +33572,8 @@ var Main = function (_React$Component) {
         }
     }, {
         key: 'createTask',
-        value: function createTask(newTask) {
-            if (newTask.name !== '') {
+        value: function createTask(newTaskTitle) {
+            if (newTaskTitle.length > 0) {
                 var newTaskList = this.state.taskList;
                 newTaskList.push(this.state.newTask);
                 this.setState({
@@ -33583,7 +33584,7 @@ var Main = function (_React$Component) {
                         complete: false
                     }
                 });
-                this.showAlert('success', newTask + ' Successfully Created');
+                this.showAlert('success', newTaskTitle + ' Successfully Created');
             } else {
                 this.showAlert('danger', 'Task Title Cannot Be Empty');
             }

@@ -9,7 +9,7 @@ export class Alert extends React.Component<any, any> {
     this.props.hideAlert();
   }
   render(): any {
-    const alertClass: string = `alert alert-${this.props.alert.status}`;
+    const alertClass: string = `alert alert-${this.props.alert.status} text-center`;
     if (this.props.alert.visible === true) {
       return (
         <div className={alertClass}>

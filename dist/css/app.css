@@ -6317,6 +6317,15 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+body {
+  padding-top: 50px; }
+
+.alert {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0; }
+
 .list-group-item .btn-primary {
   margin-right: 20px; }
 

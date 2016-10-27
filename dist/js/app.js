@@ -33396,7 +33396,7 @@ var Alert = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            var alertClass = "alert alert-" + this.props.alert.status;
+            var alertClass = "alert alert-" + this.props.alert.status + " text-center";
             if (this.props.alert.visible === true) {
                 return React.createElement("div", { className: alertClass }, React.createElement("strong", { className: 'text-capitalize' }, this.props.alert.status), " ", this.props.alert.title, React.createElement("span", { "aria-hidden": 'true', className: 'pull-right', onClick: this.hideAlert }, "×"));
             } else {
@@ -33602,7 +33602,12 @@ var Main = function (_React$Component) {
     }, {
         key: 'showAlert',
         value: function showAlert(status, title) {
+            var _this2 = this;
+
             this.setState({ alert: { status: status, title: title, visible: true } });
+            setTimeout(function () {
+                _this2.hideAlert();
+            }, 500);
         }
     }, {
         key: 'hideAlert',
@@ -33623,10 +33628,10 @@ var Main = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             var tasks = this.state.taskList.map(function (task) {
-                return React.createElement(Task_1.Task, { key: task.id, task: task, deleteTask: _this2.deleteTask, toggleTaskComplete: _this2.toggleTaskComplete });
+                return React.createElement(Task_1.Task, { key: task.id, task: task, deleteTask: _this3.deleteTask, toggleTaskComplete: _this3.toggleTaskComplete });
             });
             var taskToolBar = React.createElement("li", { className: 'list-group-item' }, React.createElement("span", null, React.createElement("strong", null, "Complete Tasks: "), this.state.taskList.filter(function (task) {
                 return task.complete === true;

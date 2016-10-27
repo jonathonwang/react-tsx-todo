@@ -71,6 +71,9 @@ export class Main extends React.Component<any, any> {
   }
   showAlert(status, title): void {
     this.setState({ alert: { status, title, visible: true } });
+    setTimeout((): void => {
+      this.hideAlert();
+    }, 500);
   }
   hideAlert(): void {
     this.setState({ alert: { status: '', title: '', visible: false } });

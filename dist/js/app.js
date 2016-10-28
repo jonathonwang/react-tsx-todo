@@ -33444,7 +33444,7 @@ var InputForm = function (_React$Component) {
         value: function handleSubmit(event) {
             event.preventDefault();
             var newTask = this.props.taskName;
-            this.props.handleSubmit();
+            this.props.handleSubmit(newTask);
         }
     }, {
         key: "render",

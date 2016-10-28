@@ -22,7 +22,7 @@ export interface IAlertProps {
 export interface IInputFormProps {
   taskName: string;
   handleChange(event: Event);
-  handleSubmit();
+  handleSubmit(newTask: string);
 }
 
 export interface IMainBaseState extends Object {

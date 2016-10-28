@@ -14,7 +14,7 @@ export class InputForm extends React.Component<IInputFormProps, void> {
   handleSubmit(event) {
     event.preventDefault();
     const newTask = this.props.taskName;
-    this.props.handleSubmit();
+    this.props.handleSubmit(newTask);
   }
   render(): any {
     return (

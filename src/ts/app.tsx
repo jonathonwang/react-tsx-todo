@@ -148,7 +148,7 @@ export class Main extends React.Component<any, any> {
               {incompleteTasks}
               {completeTasks}
               {this.state.taskList.length > 0 ? taskToolBar : noTasksNotifier }
-              {this.state.taskList.filter((task) => task.complete === true).length > 0 ? clearCompletedBtn : ''}
+              {completeTasks.length > 0 ? clearCompletedBtn : ''}
             </ul>
           </div>
         </div>

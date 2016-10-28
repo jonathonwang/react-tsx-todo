@@ -9,18 +9,13 @@ export class Alert extends React.Component<any, any> {
     this.props.hideAlert();
   }
   render(): any {
-    const alertClass: string = `alert alert-${this.props.alert.status} text-center`;
+    const alertClass: string = `alert alert-${this.props.alert.status} text-center ${this.props.alert.visible === true ? 'open' : ''}`;
     const buttonClass: string = `pull-right btn btn-xs btn-${this.props.alert.status}`;
-    if (this.props.alert.visible === true) {
-      return (
-        <div className={alertClass}>
-          <strong className='text-capitalize'>{this.props.alert.status}</strong> {this.props.alert.title}
-          <button aria-hidden='true' className={buttonClass} onClick={this.hideAlert}>&times;</button>
-        </div>
-      );
-    }
-    else {
-      return null;
-    }
+    return (
+      <div className={alertClass}>
+        <strong className='text-capitalize'>{this.props.alert.status}</strong> {this.props.alert.title}
+        <button aria-hidden='true' className={buttonClass} onClick={this.hideAlert}>&times;</button>
+      </div>
+    );
   }
 }

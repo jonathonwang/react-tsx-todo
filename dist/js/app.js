@@ -33389,20 +33389,16 @@ var Alert = function (_React$Component) {
     }
 
     _createClass(Alert, [{
-        key: "hideAlert",
+        key: 'hideAlert',
         value: function hideAlert() {
             this.props.hideAlert();
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
-            var alertClass = "alert alert-" + this.props.alert.status + " text-center";
-            var buttonClass = "pull-right btn btn-xs btn-" + this.props.alert.status;
-            if (this.props.alert.visible === true) {
-                return React.createElement("div", { className: alertClass }, React.createElement("strong", { className: 'text-capitalize' }, this.props.alert.status), " ", this.props.alert.title, React.createElement("button", { "aria-hidden": 'true', className: buttonClass, onClick: this.hideAlert }, "×"));
-            } else {
-                return null;
-            }
+            var alertClass = 'alert alert-' + this.props.alert.status + ' text-center ' + (this.props.alert.visible === true ? 'open' : '');
+            var buttonClass = 'pull-right btn btn-xs btn-' + this.props.alert.status;
+            return React.createElement("div", { className: alertClass }, React.createElement("strong", { className: 'text-capitalize' }, this.props.alert.status), " ", this.props.alert.title, React.createElement("button", { "aria-hidden": 'true', className: buttonClass, onClick: this.hideAlert }, "×"));
         }
     }]);
 
@@ -33489,22 +33485,22 @@ var Task = function (_React$Component) {
     }
 
     _createClass(Task, [{
-        key: "deleteTask",
+        key: 'deleteTask',
         value: function deleteTask() {
             var task = this.props.task;
             this.props.deleteTask(task);
         }
     }, {
-        key: "toggleTaskComplete",
+        key: 'toggleTaskComplete',
         value: function toggleTaskComplete() {
             var task = this.props.task;
             this.props.toggleTaskComplete(task);
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
-            var toggleBtn = React.createElement("button", { className: 'btn btn-xs btn-primary', onClick: this.toggleTaskComplete }, this.props.task.complete ? 'Uncheck' : 'Check');
             var liClass = this.props.task.complete ? 'list-group-item completed' : 'list-group-item';
+            var toggleBtn = React.createElement("button", { className: 'btn btn-xs btn-primary', onClick: this.toggleTaskComplete }, this.props.task.complete ? 'Uncheck' : 'Check');
             return React.createElement("li", { className: liClass }, toggleBtn, React.createElement("span", null, this.props.task.name, " ", this.props.task.complete), React.createElement("button", { className: 'btn btn-xs btn-danger pull-right', onClick: this.deleteTask }, "Delete"));
         }
     }]);
@@ -33556,6 +33552,7 @@ var Main = function (_React$Component) {
         _this.showAlert = _this.showAlert.bind(_this);
         _this.hideAlert = _this.hideAlert.bind(_this);
         _this.toggleTaskComplete = _this.toggleTaskComplete.bind(_this);
+        _this.clearCompletedTasks = _this.clearCompletedTasks.bind(_this);
         return _this;
     }
 
@@ -33579,7 +33576,7 @@ var Main = function (_React$Component) {
                 this.setState({
                     taskList: newTaskList,
                     newTask: {
-                        id: this.state.taskList.length,
+                        id: this.state.newTask.id + 1,
                         name: '',
                         complete: false
                     }
@@ -33603,12 +33600,10 @@ var Main = function (_React$Component) {
     }, {
         key: 'showAlert',
         value: function showAlert(status, title) {
-            var _this2 = this;
-
-            this.setState({ alert: { status: status, title: title, visible: true } });
-            setTimeout(function () {
-                _this2.hideAlert();
-            }, 500);
+            var alertTimeout = void 0;
+            this.setState({
+                alert: { status: status, title: title, visible: true }
+            });
         }
     }, {
         key: 'hideAlert',
@@ -33627,19 +33622,42 @@ var Main = function (_React$Component) {
             this.setState({ taskList: newTaskList });
         }
     }, {
+        key: 'clearCompletedTasks',
+        value: function clearCompletedTasks() {
+            var newTaskList = this.state.taskList.filter(function (task) {
+                return task.complete === false;
+            });
+            var removedTasksCount = this.state.taskList.filter(function (task) {
+                return task.complete === true;
+            }).length;
+            this.setState({ taskList: newTaskList });
+            this.showAlert('success', removedTasksCount + ' Completed Tasks Successfully Deleted');
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this2 = this;
 
-            var tasks = this.state.taskList.map(function (task) {
-                return React.createElement(Task_1.Task, { key: task.id, task: task, deleteTask: _this3.deleteTask, toggleTaskComplete: _this3.toggleTaskComplete });
+            var incompleteTasks = this.state.taskList.filter(function (task) {
+                return task.complete === false;
+            }).map(function (task) {
+                return React.createElement(Task_1.Task, { key: task.id, task: task, deleteTask: _this2.deleteTask, toggleTaskComplete: _this2.toggleTaskComplete });
             });
-            var taskToolBar = React.createElement("li", { className: 'list-group-item' }, React.createElement("span", null, React.createElement("strong", null, "Complete Tasks: "), this.state.taskList.filter(function (task) {
+            var completeTasks = this.state.taskList.filter(function (task) {
                 return task.complete === true;
-            }).length), React.createElement("span", { className: 'pull-right' }, React.createElement("strong", null, "Incomplete Tasks: "), this.state.taskList.filter(function (task) {
+            }).map(function (task) {
+                return React.createElement(Task_1.Task, { key: task.id, task: task, deleteTask: _this2.deleteTask, toggleTaskComplete: _this2.toggleTaskComplete });
+            });
+            var taskToolBar = React.createElement("li", { className: 'list-group-item' }, React.createElement("span", { className: 'pull-right' }, React.createElement("strong", null, "Complete Tasks: "), this.state.taskList.filter(function (task) {
+                return task.complete === true;
+            }).length), React.createElement("span", null, React.createElement("strong", null, "Incomplete Tasks: "), this.state.taskList.filter(function (task) {
                 return task.complete === false;
             }).length));
-            return React.createElement("div", null, React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement(Alert_1.Alert, { alert: this.state.alert, hideAlert: this.hideAlert }))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("h1", { className: 'text-center' }, "Todo List"))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("ul", { className: 'list-group' }, React.createElement(InputForm_1.InputForm, { taskName: this.state.newTask.name, handleChange: this.updateInput, handleSubmit: this.createTask }), tasks, this.state.taskList.length > 0 ? taskToolBar : ''))));
+            var clearCompletedBtn = React.createElement("li", { className: 'list-group-item' }, React.createElement("button", { className: 'btn-block btn btn-primary btn-md', onClick: this.clearCompletedTasks }, "Clear Completed Tasks"));
+            var noTasksNotifier = React.createElement("li", { className: 'list-group-item' }, React.createElement("strong", { className: 'text-center' }, "No Tasks Created"));
+            return React.createElement("div", null, React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement(Alert_1.Alert, { alert: this.state.alert, hideAlert: this.hideAlert }))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("h1", { className: 'text-center' }, "Todo List"))), React.createElement("div", { className: 'row' }, React.createElement("div", { className: 'col-xs-8 col-xs-offset-2' }, React.createElement("ul", { className: 'list-group' }, React.createElement(InputForm_1.InputForm, { taskName: this.state.newTask.name, handleChange: this.updateInput, handleSubmit: this.createTask }), incompleteTasks, completeTasks, this.state.taskList.length > 0 ? taskToolBar : noTasksNotifier, this.state.taskList.filter(function (task) {
+                return task.complete === true;
+            }).length > 0 ? clearCompletedBtn : ''))));
         }
     }]);
 

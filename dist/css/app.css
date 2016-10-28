@@ -6324,12 +6324,35 @@ body {
   position: fixed;
   top: 0;
   right: 0;
-  left: 0; }
+  left: 0;
+  z-index: 1000;
+  transition: .5s ease all; }
+  .alert:not(.open) {
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden; }
 
-.list-group-item .btn-primary {
-  margin-right: 20px; }
+.list-group-item {
+  transition: .5s ease all;
+  animation-name: li-animation;
+  animation-duration: .5s;
+  animation-iteration-count: 1; }
+  .list-group-item .btn-primary {
+    margin-right: 20px; }
+  .list-group-item.completed {
+    background-color: #eee; }
 
-.list-group-item.completed {
-  background-color: #eee; }
+@keyframes li-animation {
+  0% {
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden; }
+  100% {
+    height: auto;
+    padding-top: auto;
+    padding-bottom: auto;
+    overflow: hidden; } }
 
 /*# sourceMappingURL=app.css.map */

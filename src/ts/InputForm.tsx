@@ -1,7 +1,7 @@
 // React Dependency Imports
 import * as React from 'react';
-
-export class InputForm extends React.Component<any, any> {
+import { IInputFormProps } from './interfaces';
+export class InputForm extends React.Component<IInputFormProps, void> {
   constructor(props: any) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -14,7 +14,7 @@ export class InputForm extends React.Component<any, any> {
   handleSubmit(event) {
     event.preventDefault();
     const newTask = this.props.taskName;
-    this.props.handleSubmit(newTask);
+    this.props.handleSubmit();
   }
   render(): any {
     return (

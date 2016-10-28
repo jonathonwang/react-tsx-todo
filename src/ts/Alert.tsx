@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { IAlertProps } from './interfaces';
 
-export class Alert extends React.Component<any, any> {
+export class Alert extends React.Component<IAlertProps, void> {
   constructor(props) {
     super(props);
     this.hideAlert = this.hideAlert.bind(this);

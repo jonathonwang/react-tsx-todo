@@ -15,16 +15,17 @@ import 'bootstrap';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { InputForm } from './InputForm';
+import { ITask, IAlert, IMainBaseState } from './interfaces';
 import { Task } from './Task';
 import { Alert } from './Alert';
 
-export class Main extends React.Component<any, any> {
+export class Main extends React.Component<void, IMainBaseState> {
   constructor() {
     super();
     // State
     this.state = {
       taskList: [],
-      newTask: {id: 0, name: '', complete: false},
+      newTask: { id: 0, name: '', complete: false },
       alert: { status: '', title: '', visible: false }
     };
     // Methods Bindings
@@ -43,10 +44,10 @@ export class Main extends React.Component<any, any> {
         name: taskName,
         complete: false
       }
-    });
+    } as IMainBaseState);
   }
-  createTask(newTaskTitle: string): void {
-    if (newTaskTitle.length > 0) {
+  createTask(taskName: string): void {
+    if (taskName.length > 0) {
       const newTaskList: Array<Object> = this.state.taskList;
       newTaskList.push(this.state.newTask);
       this.setState({
@@ -56,43 +57,43 @@ export class Main extends React.Component<any, any> {
           name: '',
           complete: false
         }
-      });
-      this.showAlert('success', `${newTaskTitle} Successfully Created`);
+      } as IMainBaseState);
+      this.showAlert('success', `${taskName} Successfully Created`);
     }
     else {
       this.showAlert('danger', 'Task Title Cannot Be Empty');
     }
   }
-  deleteTask(removedTask): void {
+  public deleteTask(removedTask): void {
     let newTaskList = this.state.taskList;
     const removeIndex: number = newTaskList.findIndex( (task) => task.id === removedTask.id);
     newTaskList.splice(removeIndex, 1);
-    this.setState({ taskList: newTaskList });
+    this.setState({ taskList: newTaskList } as IMainBaseState);
     this.showAlert('success', `${removedTask.name} Successfully Deleted`);
   }
-  showAlert(status, title): void {
+  public showAlert(status, title): void {
     let alertTimeout;
     this.setState({
       alert: { status, title, visible: true }
-    });
+    } as IMainBaseState);
   }
-  hideAlert(): void {
-    this.setState({ alert: { status: '', title: '', visible: false } });
+  public hideAlert(): void {
+    this.setState({ alert: { status: '', title: '', visible: false } } as IMainBaseState);
   }
-  toggleTaskComplete(task): void {
+  public toggleTaskComplete(task: ITask): void {
     const taskIndex: number = this.state.taskList.findIndex( (item) => item.id === task.id );
     task.complete = !task.complete;
     this.state.taskList[taskIndex] = task;
-    const newTaskList: Array<Object> = this.state.taskList;
-    this.setState({ taskList: newTaskList });
+    const newTaskList: Array<ITask> = this.state.taskList;
+    this.setState({ taskList: newTaskList } as IMainBaseState);
   }
-  clearCompletedTasks() {
-    const newTaskList: Array<Object> = this.state.taskList.filter((task) => task.complete === false);
+  public clearCompletedTasks() {
+    const newTaskList: Array<ITask> = this.state.taskList.filter((task) => task.complete === false);
     const removedTasksCount: number = this.state.taskList.filter((task) => task.complete === true).length;
-    this.setState({ taskList: newTaskList });
+    this.setState({ taskList: newTaskList } as IMainBaseState);
     this.showAlert('success', `${removedTasksCount} Completed Tasks Successfully Deleted`);
   }
-  render(): any {
+  public render(): any {
     // Variables for Render
     const incompleteTasks: Array<HTMLElement> = this.state.taskList.filter( (task) => task.complete === false ).map( (task) => {
      return (

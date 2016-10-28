@@ -33444,7 +33444,7 @@ var InputForm = function (_React$Component) {
         value: function handleSubmit(event) {
             event.preventDefault();
             var newTask = this.props.taskName;
-            this.props.handleSubmit(newTask);
+            this.props.handleSubmit();
         }
     }, {
         key: "render",
@@ -33569,8 +33569,8 @@ var Main = function (_React$Component) {
         }
     }, {
         key: 'createTask',
-        value: function createTask(newTaskTitle) {
-            if (newTaskTitle.length > 0) {
+        value: function createTask(taskName) {
+            if (taskName.length > 0) {
                 var newTaskList = this.state.taskList;
                 newTaskList.push(this.state.newTask);
                 this.setState({
@@ -33581,7 +33581,7 @@ var Main = function (_React$Component) {
                         complete: false
                     }
                 });
-                this.showAlert('success', newTaskTitle + ' Successfully Created');
+                this.showAlert('success', taskName + ' Successfully Created');
             } else {
                 this.showAlert('danger', 'Task Title Cannot Be Empty');
             }

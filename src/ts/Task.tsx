@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { ITaskProps } from './interfaces';
 
-export class Task extends React.Component<any, any> {
+export class Task extends React.Component<ITaskProps, void> {
   constructor(props) {
     super(props);
     this.deleteTask = this.deleteTask.bind(this);
